@@ -585,6 +585,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 95898450327325348, guid: 071b4da7cfff18347a371c677585b749,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 9017cb62604083f4b850c87e6e6f2ea2, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -601,6 +606,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1541029048}
+    - targetCorrespondingSourceObject: {fileID: 1290725874115128, guid: 071b4da7cfff18347a371c677585b749,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1541029049}
   m_SourcePrefab: {fileID: 100100000, guid: 071b4da7cfff18347a371c677585b749, type: 3}
 --- !u!1 &1541029045 stripped
 GameObject:
@@ -714,6 +723,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 9e8f319c-889f-4141-978b-b39014fd39ec
     m_ActionName: Player/Jump[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 9c6239c0-2f68-4215-919b-399da7f84b0a
+    m_ActionName: Player/Sprint[/Keyboard/space]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -745,6 +758,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   configMovement: {fileID: 11400000, guid: 0b0ac15b490627b46a77c11bf5a45e45, type: 2}
+--- !u!114 &1541029049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1541029045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40c57ee86b03af14ba882e7cd7dfe155, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
