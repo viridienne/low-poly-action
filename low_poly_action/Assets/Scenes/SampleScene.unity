@@ -593,6 +593,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1541029046}
+    - targetCorrespondingSourceObject: {fileID: 1290725874115128, guid: 071b4da7cfff18347a371c677585b749,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1541029047}
+    - targetCorrespondingSourceObject: {fileID: 1290725874115128, guid: 071b4da7cfff18347a371c677585b749,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1541029048}
   m_SourcePrefab: {fileID: 100100000, guid: 071b4da7cfff18347a371c677585b749, type: 3}
 --- !u!1 &1541029045 stripped
 GameObject:
@@ -627,7 +635,19 @@ MonoBehaviour:
       m_Calls: []
   m_ActionEvents:
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1541029047}
+        m_TargetAssemblyTypeName: ControlByInput, Assembly-CSharp
+        m_MethodName: OnMove
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 5bb93d66-6da4-403c-9624-df0a1fe2a678
     m_ActionName: Player/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
   - m_PersistentCalls:
@@ -678,11 +698,53 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: e7230874-a0b5-4325-9145-a5d3a9077381
     m_ActionName: UI/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 502c744d-e9a1-4386-b37e-795db89e5458
+    m_ActionName: Player/Special Attack[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 1606846c-60db-4c60-9e3b-84341cd8727a
+    m_ActionName: Player/Guard[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ec65ad29-28a4-4d85-957f-54164555a3d9
+    m_ActionName: Player/Roll[/Keyboard/leftShift]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 9e8f319c-889f-4141-978b-b39014fd39ec
+    m_ActionName: Player/Jump[/Keyboard/space]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &1541029047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1541029045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 043fbe54af60aad419c39ebf207989b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementController: {fileID: 1541029048}
+--- !u!114 &1541029048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1541029045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75a11fbfac9cf5248865835dce517e39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  configMovement: {fileID: 11400000, guid: 0b0ac15b490627b46a77c11bf5a45e45, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
