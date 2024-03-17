@@ -9,6 +9,7 @@ public class ControlAnimator : MonoBehaviour
     [ShowInInspector]private Animator animator;
     private static readonly int VelocityX = Animator.StringToHash("velocityX");
     private static readonly int VelocityZ = Animator.StringToHash("velocityZ");
+    private static readonly int NormalAttack = Animator.StringToHash("normalAttack");
 
     private void Awake()
     {
@@ -19,5 +20,10 @@ public class ControlAnimator : MonoBehaviour
     {
         animator.SetFloat(VelocityX, _veloX);
         animator.SetFloat(VelocityZ, _veloZ);
+    }
+
+    public void SetNormalAttack()
+    {
+        //animator.SetTrigger(NormalAttack);
     }
 }
