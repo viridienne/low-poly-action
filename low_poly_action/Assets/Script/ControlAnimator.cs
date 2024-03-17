@@ -22,8 +22,5 @@ public class ControlAnimator : MonoBehaviour
         animator.SetFloat(VelocityZ, _veloZ);
     }
 
-    public void SetNormalAttack()
-    {
-        //animator.SetTrigger(NormalAttack);
-    }
+
 }

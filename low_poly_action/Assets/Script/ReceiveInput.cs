@@ -40,11 +40,7 @@ public class ReceiveInput : MonoBehaviour
                 break;
         }
     }
-        
-    public void OnNormalAttack(InputAction.CallbackContext _context)
-    {
-        animatorController.SetNormalAttack();
-    }
+    
 
     // private void Update()
     // {
