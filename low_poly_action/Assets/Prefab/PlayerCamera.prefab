@@ -47,6 +47,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerManager: {fileID: 0}
   _camera: {fileID: 0}
+  _camPivot: {fileID: 403284809383565500}
+  horizontalRotationSpeed: 200
+  verticalRotationSpeed: 200
+  minValue: -30
+  maxValue: 60
+  horizontalAngle: 0
+  verticalAngle: 0
 --- !u!1 &7091169484949258424
 GameObject:
   m_ObjectHideFlags: 0

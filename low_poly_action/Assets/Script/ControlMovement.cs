@@ -34,7 +34,7 @@ public class ControlMovement : CharacterControlMovement
 
     public void GetMovementInputValue()
     {
-        moveValue = ReceiveInput.Instance.inputValue;
+        moveValue = ReceiveInput.Instance.movementInputValue;
     }
     public void HandleAllMovement() //MOVEMENT BASE ON CAMERA PERSPECTIVE
     {

@@ -624,7 +624,19 @@ MonoBehaviour:
     m_ActionId: 5bb93d66-6da4-403c-9624-df0a1fe2a678
     m_ActionName: Player/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1541029047}
+        m_TargetAssemblyTypeName: ReceiveInput, Assembly-CSharp
+        m_MethodName: OnLook
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 49ca6d45-8e9f-48e3-b777-43c40df63d1e
     m_ActionName: Player/Look[/Mouse/delta]
   - m_PersistentCalls:
@@ -710,7 +722,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementController: {fileID: 1541029048}
   animatorController: {fileID: 1541029049}
-  inputValue: {x: 0, y: 0}
+  movementInputValue: {x: 0, y: 0}
+  lookInputValue: {x: 0, y: 0}
   moveAmount: 0
 --- !u!114 &1541029048
 MonoBehaviour:
@@ -861,6 +874,11 @@ PrefabInstance:
       objectReference: {fileID: 6902178864838605522}
     - target: {fileID: 3038466696288297353, guid: 36c04d613b02e5e42b1549cc4e53f51d,
         type: 3}
+      propertyPath: _camPivot
+      value: 
+      objectReference: {fileID: 1613893087479170648}
+    - target: {fileID: 3038466696288297353, guid: 36c04d613b02e5e42b1549cc4e53f51d,
+        type: 3}
       propertyPath: _playerManager
       value: 
       objectReference: {fileID: 1541029051}
@@ -924,6 +942,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 36c04d613b02e5e42b1549cc4e53f51d, type: 3}
+--- !u!4 &1613893087479170648 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 403284809383565500, guid: 36c04d613b02e5e42b1549cc4e53f51d,
+    type: 3}
+  m_PrefabInstance: {fileID: 1440433160498831076}
+  m_PrefabAsset: {fileID: 0}
 --- !u!20 &6902178864838605522 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 5491019653823079478, guid: 36c04d613b02e5e42b1549cc4e53f51d,

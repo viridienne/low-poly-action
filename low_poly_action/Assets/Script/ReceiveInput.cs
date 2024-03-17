@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
+
 [RequireComponent(typeof(ReceiveInput))]
 [RequireComponent(typeof(PlayerInput))]
 public class ReceiveInput : MonoBehaviour
@@ -8,7 +10,9 @@ public class ReceiveInput : MonoBehaviour
     public static ReceiveInput Instance;
     [SerializeField] private ControlMovement movementController;
     [SerializeField] private ControlAnimator animatorController;
-    public Vector2 inputValue;
+    [FormerlySerializedAs("inputValue")] 
+    public Vector2 movementInputValue;
+    public Vector2 lookInputValue;
     public float moveAmount;
 
 
@@ -26,8 +30,8 @@ public class ReceiveInput : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext _context)
     {
-        inputValue  = _context.ReadValue<Vector2>();
-        moveAmount = Mathf.Clamp01(Mathf.Abs(inputValue.x) + Mathf.Abs((inputValue.y)));
+        movementInputValue  = _context.ReadValue<Vector2>();
+        moveAmount = Mathf.Clamp01(Mathf.Abs(movementInputValue.x) + Mathf.Abs((movementInputValue.y)));
         
         //CHANGE BETWEEN WALK AND RUN ANIMATION
         switch (moveAmount)
@@ -39,6 +43,11 @@ public class ReceiveInput : MonoBehaviour
                 moveAmount = 1;
                 break;
         }
+    }
+    
+    public void OnLook(InputAction.CallbackContext _context)
+    {
+        lookInputValue  = _context.ReadValue<Vector2>();
     }
     
 
