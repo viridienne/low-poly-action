@@ -8,21 +8,26 @@ public class PlayerCamera : MonoBehaviour
     public static PlayerCamera Instance;
     [SerializeField] private PlayerManager _playerManager;
     public Camera _camera;
-
+    
     [Header("Settings")] 
     [SerializeField] private Transform _camPivot;
     private Vector3 camVeclocity;
     private float camSmooth = 1;
     [SerializeField] private float horizontalRotationSpeed = 200;
     [SerializeField] private float verticalRotationSpeed = 200;
+    [SerializeField] private float horizontalAngle;
+    [SerializeField] private float verticalAngle;
     
     //MIN & MAX VALUE FOR VERTICAL
     [SerializeField] private float minValue = -30; 
     [SerializeField] private float maxValue = 60;
 
-    [SerializeField] private float horizontalAngle;
-    [SerializeField] private float verticalAngle;
-    
+    //CAMERA COLLISION VALUE
+    [SerializeField] private float currentCamPosZ;
+    [SerializeField] private float newCamPosZ;
+    [SerializeField] private float collisionOffset = 0.2f;
+    [SerializeField] private LayerMask collisionLayers;
+    private Vector3 camPos;
     private void Awake()
     {
         if (Instance == null)
@@ -37,6 +42,7 @@ public class PlayerCamera : MonoBehaviour
     private void Start()
     {
         DontDestroyOnLoad(gameObject);
+        currentCamPosZ = _camera.transform.localPosition.z;
     }
     public void HandleCamera()
     {
@@ -44,6 +50,7 @@ public class PlayerCamera : MonoBehaviour
         {
             HandleMovement();
             HandleRotation();
+            HandleCollision();
         }
     }
 
@@ -53,10 +60,10 @@ public class PlayerCamera : MonoBehaviour
                                             ref camVeclocity, camSmooth * Time.deltaTime);
         transform.position = camPosition;
     }
-
     private void HandleRotation()
     {
         // IF LOCK-ON -> LOCK-ON ROTATION
+        
         // ELSE NORMAL ROTATION
         horizontalAngle += (ReceiveInput.Instance.lookInputValue.x * horizontalRotationSpeed) * Time.deltaTime;
         verticalAngle -= (ReceiveInput.Instance.lookInputValue.y * verticalRotationSpeed) * Time.deltaTime;
@@ -73,4 +80,23 @@ public class PlayerCamera : MonoBehaviour
         camRotation = Quaternion.Euler(rotationValue);
         _camPivot.localRotation = camRotation;
     }
+
+    private void HandleCollision()
+    {
+        newCamPosZ = currentCamPosZ;
+        var dir = _camera.transform.position - _camPivot.position;
+        dir.Normalize();
+        if (Physics.SphereCast(_camPivot.position, collisionOffset, dir, out var hit, Mathf.Abs(newCamPosZ),collisionLayers))
+        {
+            var distance = Vector3.Distance(_camPivot.position, hit.point);
+            newCamPosZ = collisionOffset - distance;
+        }
+        if (Mathf.Abs(newCamPosZ) < collisionOffset)
+        {
+            newCamPosZ = -collisionOffset;
+        }
+        camPos.z = Mathf.Lerp(_camera.transform.localPosition.z, newCamPosZ, 0.1f);
+        _camera.transform.localPosition = camPos;
+    }
+    
 }
