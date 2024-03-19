@@ -4,23 +4,10 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class ControlAnimator : MonoBehaviour
+public class ControlAnimator : CharacterControlAnimator
 {
-    [ShowInInspector]private Animator animator;
-    private static readonly int VelocityX = Animator.StringToHash("velocityX");
-    private static readonly int VelocityZ = Animator.StringToHash("velocityZ");
-    private static readonly int NormalAttack = Animator.StringToHash("normalAttack");
-
-    private void Awake()
+    protected override void Awake()
     {
-        animator = GetComponent<Animator>();
+        base.Awake();
     }
-
-    public void SetBasicBlend(float _veloX, float _veloZ)
-    {
-        animator.SetFloat(VelocityX, _veloX);
-        animator.SetFloat(VelocityZ, _veloZ);
-    }
-
-
 }

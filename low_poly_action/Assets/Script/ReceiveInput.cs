@@ -8,13 +8,18 @@ using UnityEngine.Serialization;
 public class ReceiveInput : MonoBehaviour
 {
     public static ReceiveInput Instance;
-    [SerializeField] private ControlMovement movementController;
-    [SerializeField] private ControlAnimator animatorController;
+    [HideInInspector] public PlayerManager playerManager;
+    // [SerializeField] private ControlMovement movementController;
+    // [SerializeField] private ControlAnimator animatorController;
     [FormerlySerializedAs("inputValue")] 
     public Vector2 movementInputValue;
     public Vector2 lookInputValue;
     public float moveAmount;
 
+    private void Awake()
+    {
+        playerManager = GetComponent<PlayerManager>();
+    }
 
     private void Start()
     {
@@ -43,6 +48,8 @@ public class ReceiveInput : MonoBehaviour
                 moveAmount = 1;
                 break;
         }
+        // VeloX = 0 BECAUSE THIS IS NOT LOCK-ON
+        playerManager._controlAnimator.UpdateAnimation(0,moveAmount);
     }
     
     public void OnLook(InputAction.CallbackContext _context)

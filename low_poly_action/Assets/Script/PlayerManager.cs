@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerManager : CharacterManager
 {
     [SerializeField] private ControlMovement _controlMovement;
-    [SerializeField] private ControlAnimator _controlAnimator;
+    [SerializeField] public ControlAnimator _controlAnimator;
     [SerializeField] private ControlCombat _controlCombat;
     protected override void Awake()
     {
