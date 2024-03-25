@@ -15,8 +15,8 @@ public class CharacterControlAnimator : MonoBehaviour
 
     public void UpdateAnimation(float veloX, float veloY)
     {
-        _characterManager._animator.SetFloat(VelocityX, veloX, 0.1f, Time.deltaTime);
-        _characterManager._animator.SetFloat(VelocityZ, veloY, 0.1f, Time.deltaTime);
+        _characterManager._animator.SetFloat(VelocityX, veloX);
+        _characterManager._animator.SetFloat(VelocityZ, veloY);
     }
 
 }

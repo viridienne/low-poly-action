@@ -57,13 +57,4 @@ public class ReceiveInput : MonoBehaviour
         lookInputValue  = _context.ReadValue<Vector2>();
     }
     
-
-    // private void Update()
-    // {
-    //      if (movementController)
-    //      {
-    //          movementController.Move(inputValue);
-    //          animatorController.SetBasicBlend(inputValue.x,inputValue.y);
-    //      }
-    // }
 }
