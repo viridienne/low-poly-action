@@ -48,7 +48,7 @@ public class UIPrefabConfig : ScriptableObject
             return;
         }
         //write guids static class, this class can convert key to guid
-        var _guids = _entries.Select(_x => _x != null && !_x.guid.IsNullOrWhitespace()).ToArray();
+        var _guids = _entries.Select(_x => _x.guid).ToArray();
         var _keys = UIPrefabs.Select(_x => _x.Key).ToArray();
         var _content = "public static class UIPrefabGuid\n{\n";
         for (int i = 0; i < _guids.Length; i++)
@@ -69,7 +69,7 @@ public class UIPrefabConfig : ScriptableObject
             var _entry = GetEntry(_guid);
             if (_entry != null)
             {
-                _entry.address = _assetObject.Key;
+                _entry.address = _guid;
                 AddressableAssetSettingsDefaultObject.Settings.SetDirty(AddressableAssetSettings.ModificationEvent.EntryMoved, _entry, true);
             }
         }
@@ -85,7 +85,7 @@ public class UIPrefabConfig : ScriptableObject
         var _group = !HasGroup(_groupName) ? CreateGroup(_groupName) : GetGroup(_groupName);
         
         var _entry = _settings.CreateOrMoveEntry(_guid, _group);
-        _entry.address = _address;
+        _entry.address = _guid;
         _settings.SetDirty(AddressableAssetSettings.ModificationEvent.EntryMoved, _entry, true);
         return _entry;
     }

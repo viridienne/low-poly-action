@@ -28,6 +28,10 @@ public class UIOverlayManager : MonoBehaviour
         switch (_UIState)
         {
             case UIState.Launcher:
+                UILoader.Instance.LoadUILauncher();
+                break;
+            default:
+                UILoader.Instance.LoadUILauncher(false);
                 break;
         }
     }

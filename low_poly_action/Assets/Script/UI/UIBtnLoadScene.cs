@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class UIBtnLoadScene : MonoBehaviour
@@ -8,6 +6,11 @@ public class UIBtnLoadScene : MonoBehaviour
 
     public void LoadScene()
     {
-        SceneLoader.Instance.LoadScene(sceneEnum);
+        switch (sceneEnum)
+        {
+            case SceneEnum.Launcher:
+                GameManager.Instance.StartGame();
+                break;
+        }
     }
 }
