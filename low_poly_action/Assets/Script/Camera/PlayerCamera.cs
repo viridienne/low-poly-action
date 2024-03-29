@@ -13,8 +13,7 @@ public class PlayerCamera : MonoBehaviour
     [SerializeField] private Transform _camPivot;
     private Vector3 camVeclocity;
     private float camSmooth = 1;
-    [SerializeField] private float horizontalRotationSpeed = 200;
-    [SerializeField] private float verticalRotationSpeed = 200;
+
     [SerializeField] private float horizontalAngle;
     [SerializeField] private float verticalAngle;
     
@@ -27,7 +26,13 @@ public class PlayerCamera : MonoBehaviour
     [SerializeField] private float newCamPosZ;
     [SerializeField] private float collisionOffset = 0.2f;
     [SerializeField] private LayerMask collisionLayers;
+    
+    private float horizontalRotationSpeed = 200;
+    private float verticalRotationSpeed = 200;
     private Vector3 camPos;
+    
+    private PlayerSettingConfig playerSettingConfig => ConfigCenter.Instance.GetPlayerSetting();
+    
     private void Awake()
     {
         if (Instance == null)
@@ -41,7 +46,6 @@ public class PlayerCamera : MonoBehaviour
     }
     private void Start()
     {
-        DontDestroyOnLoad(gameObject);
         currentCamPosZ = _camera.transform.localPosition.z;
     }
     public void HandleCamera()
@@ -65,8 +69,8 @@ public class PlayerCamera : MonoBehaviour
         // IF LOCK-ON -> LOCK-ON ROTATION
         
         // ELSE NORMAL ROTATION
-        horizontalAngle += (ReceiveInput.Instance.lookInputValue.x * horizontalRotationSpeed) * Time.deltaTime;
-        verticalAngle -= (ReceiveInput.Instance.lookInputValue.y * verticalRotationSpeed) * Time.deltaTime;
+        horizontalAngle += (ReceiveInput.Instance.lookInputValue.x * playerSettingConfig.CameraHorizontalSpeed * playerSettingConfig.CameraSensitivityMultiplier) * Time.deltaTime;
+        verticalAngle -= (ReceiveInput.Instance.lookInputValue.y * playerSettingConfig.CameraVerticalSpeed * playerSettingConfig.CameraSensitivityMultiplier) * Time.deltaTime;
         verticalAngle = Mathf.Clamp(verticalAngle, minValue, maxValue);
 
         // Y <-> X BECAUSE OF ROTATION

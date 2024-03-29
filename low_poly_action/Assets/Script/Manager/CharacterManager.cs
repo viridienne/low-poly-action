@@ -9,7 +9,6 @@ public class CharacterManager : MonoBehaviour
     public Animator _animator;
     protected virtual void Awake()
     {
-        DontDestroyOnLoad(this);
         _characterController = GetComponent<CharacterController>();
         _animator = GetComponent<Animator>();
     }
