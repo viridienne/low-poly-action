@@ -13,8 +13,8 @@ public class ControlMovement : CharacterControlMovement
     private Vector2 moveValue;
     private Vector3 moveDir;
     private Vector3 rotationDir;
-
-    [SerializeField] private ConfigMovementSO configMovement;
+    
+    private ConfigMovementSO configMovement => ConfigCenter.Instance.GetConfigMovement();
     protected override void Awake()
     {
         tf = transform;

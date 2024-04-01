@@ -20,4 +20,8 @@ public class ConfigCenter : MonoBehaviour
     {
         return playerSetting;
     }
+    public ConfigMovementSO GetConfigMovement()
+    {
+        return configMovement;
+    }
 }
