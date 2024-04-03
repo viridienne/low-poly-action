@@ -1,16 +1,19 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 
 public class PlayerCamera : MonoBehaviour
 {
+    [SerializeField] private CinemachineFreeLook freeLook;
     public static PlayerCamera Instance;
-    [SerializeField] private PlayerManager _playerManager;
-    public Camera _camera;
+    
+    private Camera camera;
+    public Camera Camera => camera;
+
+    private Transform tf;
+    public Transform Tf => tf;
     
     [Header("Settings")] 
-    [SerializeField] private Transform _camPivot;
+    // [SerializeField] private Transform _camPivot;
     private Vector3 camVeclocity;
     private float camSmooth = 1;
 
@@ -46,61 +49,68 @@ public class PlayerCamera : MonoBehaviour
     }
     private void Start()
     {
-        currentCamPosZ = _camera.transform.localPosition.z;
+        tf = transform;
+        camera = Camera.main;
+        currentCamPosZ = camera.transform.localPosition.z;
+        UpdateSetting();
     }
+    
     public void HandleCamera()
     {
-        if (_playerManager)
-        {
-            HandleMovement();
-            HandleRotation();
-            HandleCollision();
-        }
+        // HandleRotation();
+        HandleCollision();
     }
 
-    private void HandleMovement()
+    public void RegisterFollow(Transform _target)
     {
-        var camPosition = Vector3.SmoothDamp(transform.position, _playerManager.transform.position, 
-                                            ref camVeclocity, camSmooth * Time.deltaTime);
-        transform.position = camPosition;
+        freeLook.Follow = _target;
     }
-    private void HandleRotation()
+    public void RegisterLookAt(Transform _target)
     {
-        // IF LOCK-ON -> LOCK-ON ROTATION
-        
-        // ELSE NORMAL ROTATION
-        horizontalAngle += (ReceiveInput.Instance.lookInputValue.x * playerSettingConfig.CameraHorizontalSpeed * playerSettingConfig.CameraSensitivityMultiplier) * Time.deltaTime;
-        verticalAngle -= (ReceiveInput.Instance.lookInputValue.y * playerSettingConfig.CameraVerticalSpeed * playerSettingConfig.CameraSensitivityMultiplier) * Time.deltaTime;
-        verticalAngle = Mathf.Clamp(verticalAngle, minValue, maxValue);
+        freeLook.LookAt = _target;
+    }
 
-        // Y <-> X BECAUSE OF ROTATION
-        var rotationValue = Vector3.zero;
-        rotationValue.y = horizontalAngle;
-        var camRotation = Quaternion.Euler(rotationValue);
-        transform.rotation = camRotation;
-        
-        rotationValue = Vector3.zero;
-        rotationValue.x = verticalAngle;
-        camRotation = Quaternion.Euler(rotationValue);
-        _camPivot.localRotation = camRotation;
+    public void UpdateSetting()
+    {
+        freeLook.m_XAxis.m_MaxSpeed = playerSettingConfig.CameraHorizontalSpeed * playerSettingConfig.CameraSensitivityMultiplier;
+        freeLook.m_YAxis.m_MaxSpeed = playerSettingConfig.CameraVerticalSpeed * playerSettingConfig.CameraSensitivityMultiplier;
     }
+    // private void HandleRotation()
+    // {
+    //     horizontalAngle += (ReceiveInput.Instance.LookInputValue.x * playerSettingConfig.CameraHorizontalSpeed * playerSettingConfig.CameraSensitivityMultiplier) * Time.deltaTime;
+    //     verticalAngle -= (ReceiveInput.Instance.LookInputValue.y * playerSettingConfig.CameraVerticalSpeed * playerSettingConfig.CameraSensitivityMultiplier) * Time.deltaTime;
+    //     verticalAngle = Mathf.Clamp(verticalAngle, minValue, maxValue);
+    //
+    //     // // Y <-> X BECAUSE OF ROTATION
+    //     // var rotationValue = Vector3.zero;
+    //     // rotationValue.y = horizontalAngle;
+    //     // var camRotation = Quaternion.Euler(rotationValue);
+    //     // transform.rotation = camRotation;
+    //     //
+    //     // rotationValue = Vector3.zero;
+    //     // rotationValue.x = verticalAngle;
+    //     // camRotation = Quaternion.Euler(rotationValue);
+    //     // _camPivot.localRotation = camRotation;
+    //     freeLook.m_XAxis.Value = horizontalAngle;
+    //     freeLook.m_YAxis.Value = verticalAngle;
+    // }
 
     private void HandleCollision()
     {
         newCamPosZ = currentCamPosZ;
-        var dir = _camera.transform.position - _camPivot.position;
+        var dir = camera.transform.position - transform.position;
         dir.Normalize();
-        if (Physics.SphereCast(_camPivot.position, collisionOffset, dir, out var hit, Mathf.Abs(newCamPosZ),collisionLayers))
+        if (Physics.SphereCast(transform.position, collisionOffset, dir, out var hit, Mathf.Abs(newCamPosZ),collisionLayers))
         {
-            var distance = Vector3.Distance(_camPivot.position, hit.point);
+            var distance = Vector3.Distance(transform.position, hit.point);
             newCamPosZ = collisionOffset - distance;
         }
         if (Mathf.Abs(newCamPosZ) < collisionOffset)
         {
             newCamPosZ = -collisionOffset;
         }
-        camPos.z = Mathf.Lerp(_camera.transform.localPosition.z, newCamPosZ, 0.1f);
-        _camera.transform.localPosition = camPos;
+        camPos.z = Mathf.Lerp(camera.transform.localPosition.z, newCamPosZ, 0.1f);
+        camera.transform.localPosition = camPos;
     }
     
 }

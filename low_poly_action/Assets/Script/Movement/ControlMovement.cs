@@ -1,81 +1,74 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class ControlMovement : CharacterControlMovement
+public class ControlMovement : MonoBehaviour
 {
-    private PlayerManager _playerManager;
-    
     private Transform tf;
     public Transform TF => tf;
-
+    
+    private CharacterController characterController;
     private Vector2 moveValue;
     private Vector3 moveDir;
     private Vector3 rotationDir;
-    
+    private float moveSpeed;
+    private MovementState state;
+    private Quaternion qE;
+    private float freeRotationY;
+    private float currentRotationY;
     private ConfigMovementSO configMovement => ConfigCenter.Instance.GetConfigMovement();
-    protected override void Awake()
+    private void Start()
     {
         tf = transform;
-        _playerManager = GetComponent<PlayerManager>();
+        characterController = gameObject.GetOrAddComponent<CharacterController>();
     }
 
-    public void Move(Vector2 _vector2)
+    public void HandleMovement()
     {
-        var _current = tf.position;
-        var _new = new Vector3(_current.x + _vector2.x, _current.y, _current.z + _vector2.y);
-        tf.position = Vector3.Lerp(_current, _new, configMovement.walkSpeed * Time.deltaTime);
-        if (_vector2.x != 0 || _vector2.y != 0)
-        {
-            //tf.rotation = Quaternion.Euler(0f, (float)(System.Math.Atan2((_vector2.x - 0), (_vector2.y - 0)) * 180 / 3.14), 0f);
-        }
-    }
-
-    public void GetMovementInputValue()
-    {
-        moveValue = ReceiveInput.Instance.movementInputValue;
-    }
-    public void HandleAllMovement() //MOVEMENT BASE ON CAMERA PERSPECTIVE
-    {
-        //Grounded movement handle
         HandleGroundMovement();
-        //Aerial movement handle
-        //Rotation handle
-        HandleRotation();
+        HandleFreeRotation();
+    }
+
+    public void UpdateState(MovementState _newState)
+    {
+        state = _newState;
+    }
+    public void UpdateMoveDirection(Vector3 _moveValue)
+    {
+        moveDir = _moveValue;
+    }
+
+    public void UpdateRotation(Vector3 _rotationDir)
+    {
+        rotationDir = _rotationDir;
     }
 
     private void HandleGroundMovement()
     {
-        GetMovementInputValue();
-        var transform1 = PlayerCamera.Instance.transform;
-        moveDir = transform1.forward * moveValue.y;
-        moveDir += transform1.right * moveValue.x;
-        moveDir.Normalize();
-        moveDir.y = 0;
-        if (ReceiveInput.Instance.moveAmount <= 0.5f)
+        switch (state)
         {
-            _playerManager._characterController.Move(moveDir * (configMovement.walkSpeed * Time.deltaTime));
+            case MovementState.Idle:
+                moveSpeed = 0;
+                break;
+            case MovementState.Walking:
+                moveSpeed = configMovement.walkSpeed;
+                break;
+            case MovementState.Running:
+                moveSpeed = configMovement.runSpeed;
+                break;
         }
-        else if (ReceiveInput.Instance.moveAmount <= 1)
-        {
-            _playerManager._characterController.Move(moveDir * (configMovement.runSpeed * Time.deltaTime));
-        }
-    }
-
-    private void HandleAerialMovement() 
-    {
         
+        characterController.Move(moveDir * (moveSpeed * Time.deltaTime));
     }
+    
 
-    private void HandleRotation()
+    private void HandleLockRotation()
     {
         rotationDir = Vector3.zero;
-        var cam = PlayerCamera.Instance._camera.transform;
+        var cam = PlayerCamera.Instance.Tf;
         rotationDir = cam.forward * moveValue.y;
         rotationDir += cam.right * moveValue.x;
         rotationDir.Normalize();
         rotationDir.y = 0;
+        
         if (rotationDir == Vector3.zero)
         {
             rotationDir = transform.forward;
@@ -84,5 +77,13 @@ public class ControlMovement : CharacterControlMovement
         var newDir = Quaternion.LookRotation(rotationDir);
         var camDir = Quaternion.Slerp(transform.rotation, newDir, configMovement.rotationSpeed * Time.deltaTime);
         transform.rotation = camDir;
+    }
+    
+    public void HandleFreeRotation()
+    {
+        qE = Quaternion.LookRotation(rotationDir, transform.up);
+        
+        var _dir = Quaternion.Slerp( transform.rotation , qE, configMovement.rotationSpeed * Time.deltaTime);
+        transform.rotation = _dir;
     }
 }

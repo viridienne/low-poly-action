@@ -7,4 +7,5 @@ public class ConfigMovementSO : ScriptableObject
     public float runSpeed;
     public float jumpForce;
     public float rotationSpeed;
+    public float blendSpeed;
 }

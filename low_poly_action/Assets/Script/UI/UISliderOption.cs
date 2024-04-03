@@ -24,13 +24,7 @@ public class UISliderOption : MonoBehaviour
 
     private void OnSliderValueChanged(float _arg0)
     {
-        switch (settingType)
-        {
-            case SettingType.CameraSensitivity:
-                _arg0 = Mathf.Clamp(_arg0, 0.1f, 1f);
-                playerSettingConfig.CameraSensitivityMultiplier = _arg0;
-                break;
-        }
+        ConfigCenter.Instance.OnChange(settingType, _arg0);
     }
 
 }

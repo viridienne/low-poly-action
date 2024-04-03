@@ -29,7 +29,7 @@ public class SceneLoader : MonoBehaviour
 {
     public static SceneLoader Instance;
     private SceneEnum currentScene;
-    
+    public SceneEnum CurrentScene => currentScene;
     
     private Coroutine loadSceneCoroutine;
     private Coroutine loadSceneAdditiveCoroutine;
@@ -69,5 +69,6 @@ public class SceneLoader : MonoBehaviour
         AsyncOperation _operation = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName);
         while (!_operation.isDone)
             yield return new WaitForEndOfFrame();
+        currentScene = (SceneEnum) Enum.Parse(typeof(SceneEnum), sceneName);
     }
 }

@@ -16,3 +16,4 @@ MonoBehaviour:
   runSpeed: 5
   jumpForce: 3
   rotationSpeed: 50
+  blendSpeed: 5

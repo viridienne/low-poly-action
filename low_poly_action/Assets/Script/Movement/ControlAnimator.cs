@@ -1,13 +1,19 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class ControlAnimator : CharacterControlAnimator
+public class ControlAnimator : MonoBehaviour
 {
-    protected override void Awake()
+    
+    private Animator animator;
+    private static readonly int VelocityX = Animator.StringToHash("velocityX");
+    private static readonly int VelocityZ = Animator.StringToHash("velocityZ");
+   
+    public void RegisterAnimator(Animator _animator)
     {
-        base.Awake();
+        animator = _animator;
+    }
+    public void UpdateAnimation(float _veloX, float _veloY)
+    {
+        animator.SetFloat(VelocityX, _veloX);
+        animator.SetFloat(VelocityZ, _veloY);
     }
 }
