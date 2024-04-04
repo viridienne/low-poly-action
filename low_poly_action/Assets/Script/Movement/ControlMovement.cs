@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class ControlMovement : MonoBehaviour
 {
@@ -6,7 +7,6 @@ public class ControlMovement : MonoBehaviour
     public Transform TF => tf;
     
     private CharacterController characterController;
-    private Vector2 moveValue;
     private Vector3 moveDir;
     private Vector3 rotationDir;
     private float moveSpeed;
@@ -24,7 +24,7 @@ public class ControlMovement : MonoBehaviour
     public void HandleMovement()
     {
         HandleGroundMovement();
-        HandleFreeRotation();
+        HandleRotation();
     }
 
     public void UpdateState(MovementState _newState)
@@ -34,11 +34,6 @@ public class ControlMovement : MonoBehaviour
     public void UpdateMoveDirection(Vector3 _moveValue)
     {
         moveDir = _moveValue;
-    }
-
-    public void UpdateRotation(Vector3 _rotationDir)
-    {
-        rotationDir = _rotationDir;
     }
 
     private void HandleGroundMovement()
@@ -59,31 +54,17 @@ public class ControlMovement : MonoBehaviour
         characterController.Move(moveDir * (moveSpeed * Time.deltaTime));
     }
     
-
-    private void HandleLockRotation()
+    public void SetRotationDir(Vector3 _dir)
     {
-        rotationDir = Vector3.zero;
-        var cam = PlayerCamera.Instance.Tf;
-        rotationDir = cam.forward * moveValue.y;
-        rotationDir += cam.right * moveValue.x;
-        rotationDir.Normalize();
-        rotationDir.y = 0;
-        
-        if (rotationDir == Vector3.zero)
-        {
-            rotationDir = transform.forward;
-        }
-
-        var newDir = Quaternion.LookRotation(rotationDir);
-        var camDir = Quaternion.Slerp(transform.rotation, newDir, configMovement.rotationSpeed * Time.deltaTime);
-        transform.rotation = camDir;
+        rotationDir = _dir;
     }
-    
-    public void HandleFreeRotation()
+    private void HandleRotation()
     {
-        qE = Quaternion.LookRotation(rotationDir, transform.up);
+        if(rotationDir == Vector3.zero) return;
         
-        var _dir = Quaternion.Slerp( transform.rotation , qE, configMovement.rotationSpeed * Time.deltaTime);
+        var _target = Quaternion.LookRotation(rotationDir);
+        var _current = transform.rotation;
+        var _dir = Quaternion.Slerp(_current, _target, configMovement.rotationSpeed * Time.deltaTime);
         transform.rotation = _dir;
     }
 }

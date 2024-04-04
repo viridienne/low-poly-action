@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 /// <summary>
 /// Control and link the components of the player
@@ -34,11 +35,11 @@ public class PlayerController : EntityController
 
         UpdateMoveDirection();
         UpdateMovementState();
-        UpdateRotation();
         
         if (controlMovement)
         {
             controlMovement.HandleMovement();
+            UpdateRotate();
         }
         if(controlAnimator)
         {
@@ -54,21 +55,11 @@ public class PlayerController : EntityController
     
     public void UpdateMoveDirection()
     {
-        switch (movementType)
-        {
-            case MovementType.Free:
-                moveDir = moveInput.x * transform.right + moveInput.y * transform.forward;
-                moveDir.Normalize();
-                moveDir.y = 0;
-                break;
-            case MovementType.LockOn:
-                var _camera = PlayerCamera.Instance.transform;
-                moveDir = _camera.forward * moveInput.y;
-                moveDir += _camera.right * moveInput.x;
-                moveDir.Normalize();
-                moveDir.y = 0;
-                break;
-        }
+        var _camera = PlayerCamera.Instance.transform;
+        moveDir = _camera.forward * moveInput.y;
+        moveDir += _camera.right * moveInput.x;
+        moveDir.Normalize();
+        moveDir.y = 0;
         controlMovement.UpdateMoveDirection(moveDir);
     }
     
@@ -78,7 +69,7 @@ public class PlayerController : EntityController
         var _absX = Mathf.Abs(moveInput.x);
         var _absY = Mathf.Abs(moveInput.y);
 
-        rawMoveValue = Mathf.Clamp01(_absX + _absX);
+        rawMoveValue = Mathf.Clamp01(_absX + _absY);
         targetVelocity = new Vector2(_absX, _absY);
         
         switch (rawMoveValue)
@@ -93,10 +84,20 @@ public class PlayerController : EntityController
                 break;
         }
     }
-    
-    public void UpdateRotation()
+
+    public void UpdateRotate()
     {
-        var _direction = moveDir;
-        controlMovement.UpdateRotation(_direction);
+        Vector3 _rotationDir;
+        var _cam = PlayerCamera.Instance.Tf;
+        _rotationDir = _cam.forward * moveInput.y;
+        _rotationDir += _cam.right * moveInput.x;
+        _rotationDir.Normalize();
+        _rotationDir.y = 0;
+        
+        if (_rotationDir == Vector3.zero)
+        {
+            _rotationDir = transform.forward;
+        }
+        controlMovement.SetRotationDir(_rotationDir);
     }
 }

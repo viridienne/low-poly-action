@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f8f5f56cfbd55146a4f31895cf75bd6, type: 3}
   m_Name: MovementSO_01
   m_EditorClassIdentifier: 
-  walkSpeed: 3
-  runSpeed: 5
-  jumpForce: 3
-  rotationSpeed: 50
+  walkSpeed: 4
+  runSpeed: 7
+  jumpForce: 5
+  rotationSpeed: 10
   blendSpeed: 5
