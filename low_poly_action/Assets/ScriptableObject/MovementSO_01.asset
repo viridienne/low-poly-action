@@ -18,4 +18,4 @@ MonoBehaviour:
   rotationSpeed: 10
   blendSpeed: 5
   jumpSpeed: 7
-  jumpCooldown: 1.5
+  jumpCooldown: 1.25
