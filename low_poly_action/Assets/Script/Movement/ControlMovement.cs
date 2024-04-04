@@ -18,6 +18,8 @@ public class ControlMovement : MonoBehaviour
     private ConfigMovementSO configMovement => ConfigCenter.Instance.GetConfigMovement();
     private float targetMoveDirY;
     private bool expectGrounded;
+    private bool lockInJump;
+    
     private void Start()
     {
         tf = transform;
@@ -36,6 +38,8 @@ public class ControlMovement : MonoBehaviour
     }
     public void UpdateMoveDirection(Vector3 _moveValue)
     {
+        if(lockInJump) return;
+        
         moveDir = _moveValue;
     }
 
@@ -66,7 +70,10 @@ public class ControlMovement : MonoBehaviour
         {
             if (expectGrounded)
             {
+                moveDir = Vector3.zero;
+                
                 expectGrounded = false;
+                lockInJump = false;
                 landCallback?.Invoke();
                 landCallback = null;
             }
@@ -81,7 +88,7 @@ public class ControlMovement : MonoBehaviour
     }
     private void HandleRotation()
     {
-        if(rotationDir == Vector3.zero) return;
+        if(rotationDir == Vector3.zero || !characterController.isGrounded) return;
         
         var _target = Quaternion.LookRotation(rotationDir);
         var _current = transform.rotation;
@@ -96,6 +103,7 @@ public class ControlMovement : MonoBehaviour
         {
             landCallback = _landCallback;
             targetMoveDirY = configMovement.jumpForce;
+            lockInJump = true;
             return true;
         }
 
