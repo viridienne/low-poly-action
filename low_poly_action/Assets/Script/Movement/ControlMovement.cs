@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -15,6 +16,8 @@ public class ControlMovement : MonoBehaviour
     private float freeRotationY;
     private float currentRotationY;
     private ConfigMovementSO configMovement => ConfigCenter.Instance.GetConfigMovement();
+    private float targetMoveDirY;
+    private bool expectGrounded;
     private void Start()
     {
         tf = transform;
@@ -50,7 +53,25 @@ public class ControlMovement : MonoBehaviour
                 moveSpeed = configMovement.runSpeed;
                 break;
         }
-        
+
+        if (!characterController.isGrounded)
+        {
+            if (transform.position.y > moveDir.y)
+            {
+                targetMoveDirY += Physics.gravity.y * Time.deltaTime;
+                if(!expectGrounded) expectGrounded = true;
+            }
+        }
+        else
+        {
+            if (expectGrounded)
+            {
+                expectGrounded = false;
+                landCallback?.Invoke();
+                landCallback = null;
+            }
+        }
+        moveDir.y = Mathf.Lerp(moveDir.y, targetMoveDirY, configMovement.jumpSpeed * Time.deltaTime);
         characterController.Move(moveDir * (moveSpeed * Time.deltaTime));
     }
     
@@ -66,5 +87,18 @@ public class ControlMovement : MonoBehaviour
         var _current = transform.rotation;
         var _dir = Quaternion.Slerp(_current, _target, configMovement.rotationSpeed * Time.deltaTime);
         transform.rotation = _dir;
+    }
+
+    private Action landCallback;
+    public bool OnJump(Action _landCallback)
+    {
+        if (characterController.isGrounded)
+        {
+            landCallback = _landCallback;
+            targetMoveDirY = configMovement.jumpForce;
+            return true;
+        }
+
+        return false;
     }
 }

@@ -10,9 +10,11 @@ public class ReceiveInput : MonoBehaviour
     
     public Vector2 MovementInputValue => movementInputValue;
     public Vector2 LookInputValue => lookInputValue;
+    public bool JumpInputValue => jumpInputValue;
     
     private Vector2 movementInputValue;
     private  Vector2 lookInputValue;
+    private bool jumpInputValue;
     
     private void Awake()
     {
@@ -36,4 +38,16 @@ public class ReceiveInput : MonoBehaviour
         lookInputValue  = _context.ReadValue<Vector2>();
     }
     
+    public void OnJump(InputAction.CallbackContext _context)
+    {
+        switch (_context.phase)
+        {
+            case InputActionPhase.Performed:
+                jumpInputValue = true;
+                break;
+            case InputActionPhase.Canceled:
+                jumpInputValue = false;
+                break;
+        }
+    }
 }

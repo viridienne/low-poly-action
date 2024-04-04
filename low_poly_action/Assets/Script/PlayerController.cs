@@ -17,7 +17,8 @@ public class PlayerController : EntityController
     private Vector2 currentVelocity;
     private Vector2 targetVelocity;
     private MovementType movementType;
-
+    private float lastJumpTime;
+    
     protected override void Start()
     {
         base.Start();
@@ -35,7 +36,8 @@ public class PlayerController : EntityController
 
         UpdateMoveDirection();
         UpdateMovementState();
-        
+        UpdateJump();
+
         if (controlMovement)
         {
             controlMovement.HandleMovement();
@@ -99,5 +101,25 @@ public class PlayerController : EntityController
             _rotationDir = transform.forward;
         }
         controlMovement.SetRotationDir(_rotationDir);
+    }
+    
+    public void UpdateJump()
+    {
+        if(Time.realtimeSinceStartup - lastJumpTime < movementConfig.jumpCooldown) return;
+        
+        var _jump = ReceiveInput.Instance.JumpInputValue;
+        if (_jump)
+        {
+            var _jumped = controlMovement.OnJump(OnGrounded);
+            if (_jumped)
+            {
+                lastJumpTime = Time.realtimeSinceStartup;
+                controlAnimator.OnJump();
+            }
+        }
+    }
+    public void OnGrounded()
+    {
+        controlAnimator.OnEndJump();
     }
 }
