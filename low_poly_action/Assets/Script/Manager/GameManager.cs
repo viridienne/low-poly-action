@@ -30,17 +30,4 @@ public class GameManager : MonoBehaviour
         SceneLoader.Instance.LoadScene(SceneEnum.SampleScene);
         UIOverlayManager.Instance.SetUI(UIState.InGame);
     }
-
-    private void Update()
-    {
-        var _currentScene = SceneLoader.Instance.CurrentScene;
-        switch (_currentScene)
-        {
-            case SceneEnum.Launcher:
-                break;
-            case SceneEnum.SampleScene:
-                PlayerCamera.Instance.HandleCamera();
-                break;
-        }
-    }
 }
